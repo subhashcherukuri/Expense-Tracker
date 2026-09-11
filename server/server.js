@@ -15,12 +15,29 @@ const app = express();
 connectDB();
 
 // CORS Configuration
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:3000",
+  "https://expense-tracker-ten-silk-25.vercel.app",
+  process.env.CLIENT_URL,
+].filter(Boolean);
+
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://expense-tracker-ten-silk-25.vercel.app",
-    ],
+    origin: (origin, callback) => {
+      // Allow requests with no origin (e.g. mobile apps, curl, Postman)
+      if (!origin) return callback(null, true);
+
+      const isAllowed =
+        allowedOrigins.includes(origin) ||
+        /^https:\/\/.*\.vercel\.app$/.test(origin);
+
+      if (isAllowed) {
+        callback(null, true);
+      } else {
+        callback(new Error(`Not allowed by CORS: ${origin}`));
+      }
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
