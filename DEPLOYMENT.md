@@ -27,40 +27,50 @@ This guide details the complete process for deploying the **Expense Tracker** ap
 
 ---
 
-## Step 1: Push Local Updates to GitHub
+## Step 1: Create the GitHub Repository & Push
 
-Make sure your repository has the latest configurations (including `vercel.json` and CORS settings):
+1. Go to GitHub and create a new repository:
+   - URL: [https://github.com/new](https://github.com/new)
+   - Repository Name: `Expense-Tracker`
+   - Set to **Public**
+   - **Do not** check "Add a README file" or ".gitignore" (keep it empty).
+   - Click **Create repository**.
 
-```bash
-git add .
-git commit -m "Configure deployment settings for Render and Vercel"
-git push origin main
-```
+2. Push your commits from this folder:
+   ```bash
+   git push -u origin main
+   ```
 
 ---
 
 ## Step 2: Deploy Backend to Render
 
-If you already have the backend running on Render (e.g., `https://expense-tracker-api-jvzj.onrender.com`), pushing your code to the `main` branch will automatically trigger a redeploy!
+You can deploy to Render in two quick ways:
 
-If you need to set up a new Render service:
+### Option A: Using the Render Blueprint (Easiest - 1 Click)
+1. Go to [dashboard.render.com](https://dashboard.render.com).
+2. Click **New +** > **Blueprint**.
+3. Connect your GitHub repository: `subhashcherukuri/Expense-Tracker`.
+4. Render will automatically detect [`render.yaml`](render.yaml) and configure:
+   - Root Directory: `server`
+   - Build Command: `npm install`
+   - Start Command: `npm start`
+   - Auto-generated `JWT_SECRET`
+5. Enter your `MONGO_URI` (from MongoDB Atlas) and click **Apply**.
 
-1. **Sign in / Sign up**: Go to [dashboard.render.com](https://dashboard.render.com).
-2. **Create New Web Service**:
-   - Click **New +** > **Web Service**.
-   - Select **Build and deploy from a Git repository**.
-   - Connect your GitHub account and choose `Sahithyaraavi/Expense-Tracker`.
-3. **Configure the Service Settings**:
+### Option B: Manual Web Service Setup
+1. Go to [dashboard.render.com](https://dashboard.render.com).
+2. Click **New +** > **Web Service**.
+3. Connect your GitHub repository `subhashcherukuri/Expense-Tracker`.
+4. Configure the settings:
    | Setting | Value |
    | :--- | :--- |
-   | **Name** | `expense-tracker-api` (or your preferred name) |
-   | **Region** | Closest to you (e.g., Singapore, Frankfurt, Oregon) |
-   | **Branch** | `main` |
-   | **Root Directory** | `server` *(Important: Do not leave blank!)* |
+   | **Name** | `expense-tracker-api` |
+   | **Root Directory** | `server` *(Important!)* |
    | **Runtime** | `Node` |
    | **Build Command** | `npm install` |
    | **Start Command** | `npm start` |
-   | **Instance Type** | Free |
+   | **Plan** | Free |
 4. **Add Environment Variables**:
    Under **Environment Variables**, click **Add Environment Variable**:
    | Key | Value |
